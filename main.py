@@ -1,36 +1,36 @@
-import numpy as np
+import csv
 def distancia_euclidiana(x1,x2,y1,y2) :
-    a = np.array((x1,y1))
-    b = np.array((x2,y2))
+    point1 = [x1,y1]
+    point2 = [x2,y2]
 
-    dist = round(np.linalg.norm(a-b))
-
+    dist =  round(pow(((float(x1) - float(x2)) ** 2) + ((float(y1) - float(y2)) ** 2),0.5))
+ 
     return(dist)
 
-dados = open('/home/aluno/Documentos/Bruno K/Instancia/dados.tsp','r')
-
+dados = open('/home/bruno/Documentos/Estudos/Bruno K/instancias/dados.tsp','r')
+#Formatando os dados da tabela
 vetor = []
 index = 0
 for linha in dados:
     posicoes = linha.split()
     vetor.insert(index,posicoes[1:3])
     index += 1
-#print(vetor)
+    
 dados.close()
 
-matriz = np.array([])
+#calculando as distancias e inserindo na tabela
+matriz = []
 
-#for linha in vetor:
- #   for coluna in vetor : 
-  #      numpy.insert(matriz,linha, coluna)
-linha = 0 
-coluna = 0
-while linha <= np.size(vetor) :
-    xBase = vetor[linha][0]
-    yBase = vetor[linha][1]
-    while coluna <= np.size(vetor):
-        distancia = distancia_euclidiana(xBase,vetor[coluna][0],yBase,vetor[coluna][1])
-        print(distancia)
-        coluna += 1
-    linha += 1
+for linha in range(len(vetor)):
+    atual = vetor[linha]
+    auxiliar = []
+    for coluna in range(len(vetor)):
+        auxiliar.append(distancia_euclidiana(atual[0],vetor[coluna][0],atual[1],vetor[coluna][1]))
     
+    matriz.insert(linha,auxiliar)
+
+
+with open('Matriz_Adjacencia.csv', "w") as f :
+    write = csv.writer(f) 
+    write.writerows(matriz)
+    print("Arquivo criado")
